@@ -43,7 +43,9 @@ return {
         -- ansible
         "ansible-language-server",
         -- docker
-        "dockerfile-language-server"
+        "dockerfile-language-server",
+        -- yaml
+        "yaml-language-server",
   		},
   	},
   },
@@ -60,10 +62,28 @@ return {
   	},
   },
   {
-    "goolord/alpha-nvim",
-    disable = false
+    "nvim-tree/nvim-web-devicons",
   },
   {
     "hashivim/vim-terraform"
+  },
+  {
+    "kdheepak/lazygit.nvim",
+    keys = {
+      {
+        "<leader>gg",
+        "<cmd>LazyGit<CR>",
+        desc = "Open LazyGit",
+      }
+    },
+    cmd = "LazyGit"
+  },
+  {
+    "goolord/alpha-nvim",
+    event = "VimEnter",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+        require"alpha".setup(require"alpha.themes.startify".config)
+    end
   },
 }
