@@ -1,15 +1,21 @@
--- AstroCommunity: import any community modules here
--- We import this file in `lazy_setup.lua` before the `plugins/` folder.
--- This guarantees that the specs are processed before any user plugins.
-
----@type LazySpec
 return {
   "AstroNvim/astrocommunity",
-  { import = "astrocommunity.pack.lua" },
+  { import = "astrocommunity.colorscheme.catppuccin" },
   { import = "astrocommunity.recipes.telescope-nvchad-theme" },
-  { import = "astrocommunity.pack.terraform" },
-  { import = "astrocommunity.pack.ansible" },
-  { import = "astrocommunity.pack.python" },
-  { import = "astrocommunity.pack.sql" },
+  { import = "astrocommunity.recipes.heirline-nvchad-statusline" },
+  { import = "astrocommunity.recipes.picker-nvchad-theme" },
+  { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.pack.yaml" },
+  { import = "astrocommunity.pack.go" },
+  { import = "astrocommunity.pack.bash" },
+  { import = "astrocommunity.pack.docker" },
+  { import = "astrocommunity.pack.terraform" },
+  { import = "astrocommunity.pack.python" },
+  { import = "astrocommunity.pack.json" },
+  { import = "astrocommunity.pack.html-css" },
+  { import = "astrocommunity.motion.mini-move" },
+  { import = "astrocommunity.motion.mini-surround" },
+  { import = "astrocommunity.editing-support.vim-visual-multi" },
+  { import = "astrocommunity.markdown-and-latex.peek-nvim" },
+  { import = "astrocommunity.completion.avante-nvim" },
 }
