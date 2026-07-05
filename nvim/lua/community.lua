@@ -1,6 +1,7 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.colorscheme.catppuccin" },
+  { import = "astrocommunity.colorscheme.kanagawa-nvim" },
   { import = "astrocommunity.recipes.telescope-nvchad-theme" },
   { import = "astrocommunity.recipes.heirline-nvchad-statusline" },
   { import = "astrocommunity.recipes.picker-nvchad-theme" },
@@ -13,9 +14,9 @@ return {
   { import = "astrocommunity.pack.python" },
   { import = "astrocommunity.pack.json" },
   { import = "astrocommunity.pack.html-css" },
+  { import = "astrocommunity.pack.helm" },
   { import = "astrocommunity.motion.mini-move" },
   { import = "astrocommunity.motion.mini-surround" },
   { import = "astrocommunity.editing-support.vim-visual-multi" },
   { import = "astrocommunity.markdown-and-latex.peek-nvim" },
-  { import = "astrocommunity.completion.avante-nvim" },
 }
