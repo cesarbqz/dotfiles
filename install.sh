@@ -103,4 +103,39 @@ for tool in nvim tmux; do
   echo
 done
 
+# runtime · para qué hace falta
+# no se instalan solos a propósito: suelen manejarse con nvm/pyenv/goenv, y
+# meterlos por brew/apt pisaría esa configuración.
+runtimes='node|LSP de bash, json, yaml, html/css y docker, y prettierd
+go|gopls, delve y el resto del pack de Go
+python3|debugpy, black e isort
+deno|peek.nvim (preview de markdown)
+cc|compilar los parsers de treesitter'
+
+echo "== comprobación =="
+
+# AstroNvim v5 aborta con Neovim < 0.10; en algunas distros apt trae una anterior
+if command -v nvim >/dev/null 2>&1 &&
+   [ "$(nvim --clean --headless -c 'lua io.write(vim.fn.has("nvim-0.10"))' -c q 2>/dev/null)" != 1 ]; then
+  echo "ERROR: AstroNvim necesita Neovim >= 0.10, tenés $(nvim --version | head -1)" >&2
+  echo "       instalalo desde https://github.com/neovim/neovim/releases" >&2
+fi
+
+pendientes=0
+while IFS='|' read -r cmd para; do
+  [ -n "$cmd" ] || continue
+  command -v "$cmd" >/dev/null 2>&1 && continue
+  echo "falta $cmd — sin él no van: $para"
+  pendientes=1
+done <<EOF
+$runtimes
+EOF
+
+if [ "$pendientes" -eq 1 ]; then
+  echo "(el resto funciona igual; instalá lo que uses)"
+else
+  echo "todos los runtimes presentes"
+fi
+echo
+
 echo "todo listo."

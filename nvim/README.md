@@ -457,11 +457,28 @@ La primera vez que abras `nvim`, lazy.nvim instala los plugins en las versiones
 fijadas en `lazy-lock.json`. Cuando agregues o actualices plugins, commiteá ese
 archivo para que las demás máquinas queden idénticas.
 
-## Herramientas externas recomendadas
+## Requisitos
 
-`install.sh` las instala automáticamente con `brew` o `apt-get`:
+La lista completa está en el [README de la raíz](../README.md#requisitos). En
+resumen, para esta config de Neovim:
 
+`install.sh` instala con `brew` o `apt-get`:
+
+- **Neovim ≥ 0.10** — AstroNvim v5 no arranca con una versión anterior.
 - **ripgrep** (`rg`) — necesario para grug-far y el live grep de Telescope.
 - **fd** — acelera la búsqueda de archivos.
 - **lazygit** — TUI de git (`<Leader>gg`).
 - Una **Nerd Font** activa en la terminal — si no, los iconos se ven como cuadraditos.
+
+Y estos los tenés que tener vos, porque los maneja tu gestor de versiones
+(nvm, pyenv, goenv). `install.sh` solo comprueba si están:
+
+- **node** — los LSP que Mason instala por npm: bash, json, yaml, html/css, docker, emmet, `prettierd`.
+- **go** — `gopls`, `delve`, `goimports` y el resto del pack de Go.
+- **python3** — `debugpy`, `black`, `isort`.
+- **deno** — `peek.nvim`, el preview de markdown.
+- **Un compilador de C** — para los parsers de treesitter.
+
+Falta uno, no funciona esa parte y el resto anda igual. Los packs de lenguaje
+activos están en [`lua/community.lua`](lua/community.lua): si sacás uno, dejás de
+necesitar su runtime.
