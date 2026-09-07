@@ -1,83 +1,83 @@
 # dotfiles
 
-Configuración de **Neovim** (AstroNvim v5) y **tmux** (oh-my-tmux), pensada para
-levantarse en cualquier máquina con un solo comando.
+**Neovim** (AstroNvim v5) and **tmux** (oh-my-tmux) configuration, built to come
+up on any machine with a single command.
 
-## Cómo se ve
+## How it looks
 
-Neovim (AstroNvim + catppuccin) con el explorador de archivos abierto, corriendo
-dentro de tmux:
+Neovim (AstroNvim + catppuccin) with the file explorer open, running inside tmux:
 
-![Neovim con neo-tree, tabline y statusline, dentro de tmux](docs/nvim.png)
+![Neovim with neo-tree, tabline and statusline, inside tmux](docs/nvim.png)
 
-tmux con la barra de estado de oh-my-tmux y tres paneles — historia de git, el
-instalador y el estado del repo:
+tmux with the oh-my-tmux status bar and three panes — git history, the installer,
+and repo status:
 
-![tmux con tres paneles y la barra de estado de oh-my-tmux](docs/tmux.png)
+![tmux with three panes and the oh-my-tmux status bar](docs/tmux.png)
 
-Las dos capturas se generan solas desde [`docs/demo.tape`](docs/demo.tape), así
-que se pueden rehacer cuando cambie la config:
+Both screenshots are generated from [`docs/demo.tape`](docs/demo.tape), so they
+can be remade whenever the config changes:
 
 ```shell
 brew install vhs
 vhs docs/demo.tape
 ```
 
-Usa los symlinks que dejó `install.sh`, o sea que refleja lo que hay commiteado
-acá. Corre tmux sobre un socket propio (`-L vhs`) para no tocar tus sesiones.
+It uses the symlinks `install.sh` created, which means it reflects what is
+actually committed here. It runs tmux on its own socket (`-L vhs`) so it never
+touches your sessions.
 
-## Requisitos
+## Requirements
 
-### Antes de empezar
+### Before you start
 
-Lo único que tenés que tener sí o sí para arrancar:
+The only things you strictly need to get going:
 
-| Requisito | Por qué |
+| Requirement | Why |
 | --- | --- |
-| **git ≥ 2.19** | Para clonar el repo, y porque lazy.nvim usa *partial clone* (`--filter=blob:none`). |
-| **Terminal con true color y una Nerd Font activa** | La barra de estado y los iconos de Neovim los necesitan; sin la fuente se ven cuadraditos. |
-| **`TERM=xterm-256color`** fuera de tmux | Lo pide oh-my-tmux para que los colores salgan bien. |
-| **awk, perl, grep, sed** | Los usa oh-my-tmux. Vienen de fábrica en macOS y en cualquier Linux. |
-| **`brew` o `apt-get`** | Solo si querés que `install.sh` instale las dependencias. Sin ninguno de los dos, avisa y las instalás a mano. |
+| **git ≥ 2.19** | To clone the repo, and because lazy.nvim uses *partial clone* (`--filter=blob:none`). |
+| **A true-color terminal with a Nerd Font enabled** | The status bar and Neovim's icons need it; without the font you get boxes. |
+| **`TERM=xterm-256color`** outside tmux | oh-my-tmux requires it for colors to come out right. |
+| **awk, perl, grep, sed** | Used by oh-my-tmux. Present out of the box on macOS and any Linux. |
+| **`brew` or `apt-get`** | Only if you want `install.sh` to install the dependencies. With neither, it warns and you install them by hand. |
 
-### Lo que instala `./install.sh` por vos
+### What `./install.sh` installs for you
 
-| Paquete | Para qué |
+| Package | What for |
 | --- | --- |
-| `neovim` **≥ 0.10** | AstroNvim v5 aborta con una versión anterior. |
-| `tmux` **≥ 2.6** | Es el mínimo que pide oh-my-tmux. |
-| `git` | Ver arriba. |
-| `ripgrep` (`rg`) | grug-far y el live grep de Telescope. |
-| `fd` | Acelera la búsqueda de archivos. |
-| `lazygit` | TUI de git (`<Leader>gg`). No está en apt: en Debian/Ubuntu se instala aparte. |
-| JetBrainsMono Nerd Font | Solo en macOS vía brew, y solo si no detecta ninguna Nerd Font instalada. |
+| `neovim` **≥ 0.10** | AstroNvim v5 aborts on anything older. |
+| `tmux` **≥ 2.6** | The minimum oh-my-tmux requires. |
+| `git` | See above. |
+| `ripgrep` (`rg`) | grug-far and Telescope's live grep. |
+| `fd` | Speeds up file searching. |
+| `lazygit` | Git TUI (`<Leader>gg`). Not in apt: on Debian/Ubuntu install it separately. |
+| JetBrainsMono Nerd Font | macOS only, via brew, and only if no Nerd Font is already installed. |
 
-> **Ojo con Neovim en Linux:** el `apt` de las distros estables suele traer una
-> versión anterior a 0.10, con la que AstroNvim no arranca. `install.sh` verifica
-> la versión y avisa; si no cumple, usá el binario de
-> [releases de Neovim](https://github.com/neovim/neovim/releases), un PPA o brew.
+> **Careful with Neovim on Linux:** `apt` on stable distros often ships a version
+> older than 0.10, which AstroNvim refuses to start on. `install.sh` checks the
+> version and warns; if it falls short, use the binary from
+> [Neovim releases](https://github.com/neovim/neovim/releases), a PPA, or brew.
 
-### Runtimes que necesitan los plugins
+### Runtimes the plugins need
 
-Estos **no se instalan solos a propósito**: normalmente los manejás con nvm,
-pyenv o goenv, y meterlos por brew/apt pisaría esa configuración. `install.sh`
-solo comprueba si están y te dice qué te falta.
+These are **deliberately not installed for you**: you normally manage them with
+nvm, pyenv or goenv, and installing them over brew/apt would shadow that setup.
+`install.sh` only checks whether they are there and tells you what is missing.
 
-Todo lo que no tengas simplemente no funciona; el resto del editor anda igual.
+Anything you don't have simply doesn't work; the rest of the editor is fine.
 
-| Runtime | Qué deja de funcionar sin él |
+| Runtime | What stops working without it |
 | --- | --- |
-| **node** / npm | Los LSP que Mason instala por npm: bash, json, yaml, html/css, docker, emmet y `prettierd`. |
-| **go** | `gopls`, `delve`, `goimports` y el resto del pack de Go (Mason los compila con `go install`). |
+| **node** / npm | The LSPs Mason installs through npm: bash, json, yaml, html/css, docker, emmet, and `prettierd`. |
+| **go** | `gopls`, `delve`, `goimports` and the rest of the Go pack (Mason builds them with `go install`). |
 | **python3** + pip | `debugpy`, `black`, `isort`. |
-| **deno** | `peek.nvim`, el preview de markdown (su `build` corre `deno task`). |
-| **Compilador de C** (`cc`/`gcc`/`clang`) | Compilar los parsers de treesitter. En macOS viene con las Xcode Command Line Tools (`xcode-select --install`); en Debian/Ubuntu, `build-essential`. |
-| `curl`, `unzip`, `tar` | Mason los usa para bajar y descomprimir los binarios preconstruidos. Suelen venir de fábrica. |
+| **deno** | `peek.nvim`, the markdown preview (its `build` runs `deno task`). |
+| **A C compiler** (`cc`/`gcc`/`clang`) | Compiling the treesitter parsers. On macOS it comes with the Xcode Command Line Tools (`xcode-select --install`); on Debian/Ubuntu, `build-essential`. |
+| `curl`, `unzip`, `tar` | Mason uses them to download and unpack prebuilt binaries. Usually present already. |
 
-En Linux, para que funcione el portapapeles del sistema en Neovim hace falta
-`xclip` (X11) o `wl-clipboard` (Wayland).
+On Linux, the system clipboard in Neovim needs `xclip` (X11) or `wl-clipboard`
+(Wayland).
 
-## Instalación
+## Install
 
 ```shell
 git clone git@github.com:cesarbqz/dotfiles.git ~/.config/dotfiles
@@ -85,58 +85,59 @@ cd ~/.config/dotfiles
 ./install.sh
 ```
 
-El repo puede vivir en cualquier ruta (`~/dotfiles`, `~/code/dotfiles`, …): los
-enlaces se calculan desde la ubicación real del script.
+The repo can live anywhere (`~/dotfiles`, `~/code/dotfiles`, …): the links are
+resolved from the script's real location.
 
-`./install.sh` hace cuatro cosas, y es seguro re-ejecutarlo:
+`./install.sh` does four things, and is safe to re-run:
 
-1. **Instala las dependencias** que falten con `brew` o `apt-get` (la segunda
-   tabla de arriba). Con `--no-deps` se saltea este paso y no se toca el gestor
-   de paquetes.
-2. **Enlaza** `~/.config/nvim` y `~/.config/tmux` a los directorios de este repo.
-   Si ya había una config real ahí, se mueve a `<nombre>.bak-<timestamp>`; nunca
-   se borra nada.
-3. **Instala oh-my-tmux** en `~/.local/share/tmux/oh-my-tmux` y genera
-   `tmux/tmux.conf` apuntando a él.
-4. **Comprueba** la versión de Neovim y qué runtimes te faltan, sin instalarlos.
+1. **Installs the missing dependencies** with `brew` or `apt-get` (the second
+   table above). `--no-deps` skips this step and never touches the package
+   manager.
+2. **Links** `~/.config/nvim` and `~/.config/tmux` to this repo's directories.
+   If a real config was already there, it is moved to `<name>.bak-<timestamp>`;
+   nothing is ever deleted.
+3. **Installs oh-my-tmux** into `~/.local/share/tmux/oh-my-tmux` and generates
+   `tmux/tmux.conf` pointing at it.
+4. **Checks** the Neovim version and which runtimes are missing, without
+   installing them.
 
-Después: abrí `nvim` (lazy.nvim sincroniza los plugins según `lazy-lock.json` y
-Mason instala los LSP) y corré `tmux kill-server` antes de abrir una sesión nueva.
+Then: open `nvim` (lazy.nvim syncs the plugins from `lazy-lock.json` and Mason
+installs the LSPs) and run `tmux kill-server` before starting a new session.
 
-Cada herramienta tiene su instalador suelto (`nvim/install.sh`, `tmux/install.sh`)
-por si querés enlazar solo una.
+Each tool also has a standalone installer (`nvim/install.sh`, `tmux/install.sh`)
+in case you only want to link one.
 
-## Qué hay acá
+## What's in here
 
-| Ruta | Qué es |
+| Path | What it is |
 | --- | --- |
-| `nvim/` | Config de AstroNvim v5. Atajos documentados en [nvim/README.md](nvim/README.md). |
-| `nvim/lua/community.lua` | Packs de lenguaje activos: Lua, YAML, Go, Bash, Docker, Terraform, Python, JSON, HTML/CSS, Helm. Son los que definen qué runtimes te hacen falta. |
-| `nvim/lazy-lock.json` | Versiones exactas de los plugins. Commiteálo para que todas las máquinas queden iguales. |
-| `tmux/tmux.conf.local` | Tus personalizaciones de oh-my-tmux (tema, barra de estado, plugins). |
-| `tmux/scripts/` | Scripts que usa la barra de estado. |
+| `nvim/` | AstroNvim v5 config. Keymaps documented in [nvim/README.md](nvim/README.md). |
+| `nvim/lua/community.lua` | Active language packs: Lua, YAML, Go, Bash, Docker, Terraform, Python, JSON, HTML/CSS, Helm. These are what determine which runtimes you need. |
+| `nvim/lazy-lock.json` | Exact plugin versions. Commit it so every machine ends up identical. |
+| `tmux/tmux.conf.local` | Your oh-my-tmux customizations (theme, status bar, plugins). |
+| `tmux/scripts/` | Scripts used by the status bar. |
 
-## Qué no se versiona
+## What isn't versioned
 
-- `tmux/tmux.conf` — es un symlink con ruta absoluta al oh-my-tmux de cada
-  máquina, así que lo genera `tmux/install.sh`. Tiene que ser un symlink al
-  archivo real (no un `source-file`): oh-my-tmux ejecuta el propio `tmux.conf`
-  como script para gestionar sus plugins.
-- `tmux/plugins/` — ahí clona oh-my-tmux sus plugins (tpm, resurrect, …).
+- `tmux/tmux.conf` — a symlink with an absolute path to each machine's
+  oh-my-tmux, so `tmux/install.sh` generates it. It has to be a symlink to the
+  real file (not a `source-file` wrapper): oh-my-tmux runs `tmux.conf` itself as
+  a script to manage its plugins.
+- `tmux/plugins/` — where oh-my-tmux clones its plugins (tpm, resurrect, …).
 
-## Mantenerse sincronizado
+## Staying in sync
 
 ```shell
 cd ~/.config/dotfiles && git pull && ./install.sh
 ```
 
-Al cambiar plugins de Neovim, commiteá `lazy-lock.json` junto con el cambio.
+When you change Neovim plugins, commit `lazy-lock.json` along with the change.
 
-## Detalles a tener en cuenta
+## Things to keep in mind
 
-- Si existe `~/.tmux.conf`, tmux le da prioridad y esta config queda ignorada.
-  El instalador avisa.
-- `tmux.conf.local` llama a `scripts/session_age.sh` por la ruta fija
-  `~/.config/tmux/...`, porque el parser de tmux rechaza `${XDG_CONFIG_HOME}`
-  dentro de un `#()`. Con un `XDG_CONFIG_HOME` no estándar el contador de la
-  barra queda vacío y el resto anda igual; el instalador también avisa.
+- If `~/.tmux.conf` exists, tmux gives it priority and this config is ignored.
+  The installer warns about it.
+- `tmux.conf.local` calls `scripts/session_age.sh` through the fixed path
+  `~/.config/tmux/...`, because tmux's parser rejects `${XDG_CONFIG_HOME}` inside
+  a `#()`. With a non-default `XDG_CONFIG_HOME` the status-bar timer comes up
+  empty and everything else works the same; the installer warns about this too.

@@ -1,439 +1,438 @@
-# Configuración de Neovim (AstroNvim v5+)
+# Neovim configuration (AstroNvim v5+)
 
-Config personal basada en [AstroNvim](https://github.com/AstroNvim/AstroNvim) con `lazy.nvim`.
+Personal config based on [AstroNvim](https://github.com/AstroNvim/AstroNvim) with `lazy.nvim`.
 
-Este README está pensado para **buscar por función**: usá <kbd>Ctrl</kbd>+<kbd>F</kbd>
-(o `/` en el navegador/GitHub) y escribí lo que querés hacer —por ejemplo
-`saltar`, `reemplazar`, `diff`, `renombrar archivo`, `comentar`, `terminal`—
-y vas a caer directo en la tecla correspondiente. Cada fila tiene palabras
-clave en la columna "Para qué / buscar".
+This README is meant to be **searched by task**: hit <kbd>Ctrl</kbd>+<kbd>F</kbd>
+(or `/` in the browser/GitHub) and type what you want to do — for example
+`jump`, `replace`, `diff`, `rename file`, `comment`, `terminal` — and you land
+straight on the key that does it. Every row carries keywords in the
+"What for / search" column.
 
-## Convenciones
+## Conventions
 
-- **`<Leader>`** = <kbd>Espacio</kbd> (barra espaciadora).
-- **`<LocalLeader>`** = <kbd>,</kbd> (coma).
-- Notación: `<C-h>` = <kbd>Ctrl</kbd>+<kbd>h</kbd> · `<M-j>` = <kbd>Alt</kbd>+<kbd>j</kbd> ·
+- **`<Leader>`** = <kbd>Space</kbd>.
+- **`<LocalLeader>`** = <kbd>,</kbd> (comma).
+- Notation: `<C-h>` = <kbd>Ctrl</kbd>+<kbd>h</kbd> · `<M-j>` = <kbd>Alt</kbd>+<kbd>j</kbd> ·
   `<S-Tab>` = <kbd>Shift</kbd>+<kbd>Tab</kbd> · `<CR>` = <kbd>Enter</kbd>.
-- **Modo** indica dónde funciona la tecla: `n` normal · `v/x` visual · `o` operator-pending ·
+- **Mode** says where the key works: `n` normal · `v/x` visual · `o` operator-pending ·
   `i` insert · `t` terminal.
-- Descubrimiento en vivo: apretá <kbd>Espacio</kbd> y esperá — **which-key**
-  muestra un menú con todo lo que cuelga del leader. `<Leader>fk` busca cualquier keymap.
+- Live discovery: press <kbd>Space</kbd> and wait — **which-key** shows a menu of
+  everything hanging off the leader. `<Leader>fk` searches any keymap.
 
 ---
 
-## Índice por tarea
+## Index by task
 
-- [Moverse por la pantalla (saltar, Flash)](#moverse-por-la-pantalla-saltar)
-- [Buscar y reemplazar (grug-far)](#buscar-y-reemplazar-grug-far)
-- [Buscar cosas (Telescope / find)](#buscar-cosas-telescope--find)
-- [Archivos y explorador (Neo-tree, Oil)](#archivos-y-explorador-neo-tree-oil)
+- [Moving around the screen (jump, Flash)](#moving-around-the-screen-jump)
+- [Search and replace (grug-far)](#search-and-replace-grug-far)
+- [Finding things (Telescope / find)](#finding-things-telescope--find)
+- [Files and explorer (Neo-tree, Oil)](#files-and-explorer-neo-tree-oil)
 - [Git (status, commits, diff, blame)](#git-status-commits-diff-blame)
-- [Diff y merge conflicts (Diffview)](#diff-y-merge-conflicts-diffview)
-- [Buffers y pestañas](#buffers-y-pestañas)
-- [Ventanas / splits](#ventanas--splits)
-- [Editar texto (comentar, rodear, mover, multicursor)](#editar-texto)
-- [LSP: código, diagnósticos, símbolos](#lsp-código-diagnósticos-símbolos)
+- [Diff and merge conflicts (Diffview)](#diff-and-merge-conflicts-diffview)
+- [Buffers and tabs](#buffers-and-tabs)
+- [Windows / splits](#windows--splits)
+- [Editing text (comment, surround, move, multicursor)](#editing-text)
+- [LSP: code, diagnostics, symbols](#lsp-code-diagnostics-symbols)
 - [Debug (DAP)](#debug-dap)
 - [Terminal](#terminal)
-- [IA (Kiro / Claude Code)](#ia-kiro--claude-code)
-- [Toggles y UI (`<Leader>u`)](#toggles-y-ui)
-- [Sesiones](#sesiones)
-- [Plugins y paquetes (`<Leader>p`)](#plugins-y-paquetes)
-- [Archivo / general](#archivo--general)
+- [AI (Kiro / Claude Code)](#ai-kiro--claude-code)
+- [Toggles and UI (`<Leader>u`)](#toggles-and-ui)
+- [Sessions](#sessions)
+- [Plugins and packages (`<Leader>p`)](#plugins-and-packages)
+- [File / general](#file--general)
 
 ---
 
-## Moverse por la pantalla (saltar)
+## Moving around the screen (jump)
 
-Plugin: **flash.nvim**. Palabras clave: *saltar, salto, jump, ir a, motion, navegar rápido, treesitter*.
+Plugin: **flash.nvim**. Keywords: *jump, leap, go to, motion, navigate fast, treesitter*.
 
-| Tecla | Modo | Para qué / buscar |
-|-------|------|-------------------|
-| `s` + caracteres | n, x, o | **Saltar a cualquier lugar visible** — escribí 1-2 chars y elegí la etiqueta |
-| `S` | n, x, o | **Saltar por bloque Treesitter** (funciones, if, tablas) — selección de nodo AST |
-| `R` | x, o | **Búsqueda Treesitter** — extender selección a nodos con etiqueta |
-| `r` | o | **Remote Flash** — aplicar un operador (ej. `yr`) en un lugar remoto sin mover el cursor |
-| `f` `t` `F` `T` | n | Motions de carácter clásicos, mejorados con etiquetas de Flash |
-| `/` `?` | n | Búsqueda normal; Flash agrega etiquetas para saltar a cualquier match |
+| Key | Mode | What for / search |
+|-----|------|-------------------|
+| `s` + characters | n, x, o | **Jump anywhere on screen** — type 1-2 chars and pick the label |
+| `S` | n, x, o | **Jump by Treesitter block** (functions, if, tables) — AST node selection |
+| `R` | x, o | **Treesitter search** — extend the selection to labelled nodes |
+| `r` | o | **Remote Flash** — apply an operator (e.g. `yr`) somewhere remote without moving the cursor |
+| `f` `t` `F` `T` | n | Classic character motions, enhanced with Flash labels |
+| `/` `?` | n | Normal search; Flash adds labels to jump to any match |
 
-> Nota: en modo visual `s` pasa a ser "Flash" (antes borraba la selección). Usá `c` para "cambiar".
+> Note: in visual mode `s` becomes "Flash" (it used to delete the selection). Use `c` to change.
 
-## Buscar y reemplazar (grug-far)
+## Search and replace (grug-far)
 
-Plugin: **grug-far.nvim**. Palabras clave: *reemplazar, replace, buscar y reemplazar, sustituir, refactor nombre, find and replace, cambiar en todo el proyecto*.
+Plugin: **grug-far.nvim**. Keywords: *replace, search and replace, substitute, rename refactor, find and replace, change across the project*.
 
-| Tecla | Modo | Para qué / buscar |
-|-------|------|-------------------|
-| `<Leader>ss` | n | **Buscar/Reemplazar en todo el workspace** (proyecto entero, con preview en vivo) |
-| `<Leader>se` | n | Buscar/Reemplazar **solo en archivos del mismo tipo** que el actual (ej. `*.tf`) |
-| `<Leader>sf` | n | Buscar/Reemplazar **solo en el archivo actual** |
-| `<Leader>sw` | n | **Reemplazar la palabra bajo el cursor** en el proyecto |
-| `<Leader>s` | v/x | **Reemplazar el texto seleccionado** en el proyecto |
-| `gS` | n | Dentro de **Neo-tree** o **Oil**: reemplazar en el directorio bajo el cursor |
+| Key | Mode | What for / search |
+|-----|------|-------------------|
+| `<Leader>ss` | n | **Search/Replace across the whole workspace** (entire project, live preview) |
+| `<Leader>se` | n | Search/Replace **only in files of the same type** as the current one (e.g. `*.tf`) |
+| `<Leader>sf` | n | Search/Replace **only in the current file** |
+| `<Leader>sw` | n | **Replace the word under the cursor** across the project |
+| `<Leader>s` | v/x | **Replace the selected text** across the project |
+| `gS` | n | Inside **Neo-tree** or **Oil**: replace within the directory under the cursor |
 
-> El buffer de grug-far se edita como texto: cambiás el término de búsqueda/reemplazo
-> arriba y aplicás. Requiere `ripgrep` (`rg`) instalado.
+> The grug-far buffer is edited as text: change the search/replace terms at the
+> top and apply. Requires `ripgrep` (`rg`) installed.
 
-## Buscar cosas (Telescope / find)
+## Finding things (Telescope / find)
 
-Palabras clave: *buscar archivo, abrir archivo, grep, buscar palabra, buscar en proyecto, buscar comando, fuzzy finder, historial, marks, keymap*.
+Keywords: *find file, open file, grep, find word, search project, find command, fuzzy finder, history, marks, keymap*.
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `<Leader>ff` | **Buscar archivos** (fuzzy) en el proyecto |
-| `<Leader>fF` | Buscar **todos** los archivos (incluye ocultos/ignorados) |
-| `<Leader>fw` | **Buscar palabra/texto** en el proyecto (live grep) |
-| `<Leader>fW` | Buscar texto en **todos** los archivos |
-| `<Leader>fc` | Buscar la **palabra bajo el cursor** en el proyecto |
-| `<Leader>fb` | Buscar entre **buffers** abiertos |
-| `<Leader>fo` | Archivos **recientes** (old files) |
-| `<Leader>fp` | Buscar / cambiar de **proyecto** |
-| `<Leader>fh` | Buscar en la **ayuda** (`:help`) |
-| `<Leader>fk` | **Buscar keymaps** — el atajo para encontrar cualquier atajo |
-| `<Leader>fC` | Buscar **comandos** |
-| `<Leader>fT` | Buscar **TODOs** del proyecto |
-| `<Leader>ft` | Cambiar de **tema** (colorscheme) |
-| `<Leader>fr` | Buscar en **registros** |
-| `<Leader>fu` | Historial de **undo** |
-| `<Leader>f'` | Buscar **marks** |
-| `<Leader>fn` | Buscar **notificaciones** pasadas |
-| `<Leader>f<CR>` | **Reanudar** la última búsqueda |
+| Key | What for / search |
+|-----|-------------------|
+| `<Leader>ff` | **Find files** (fuzzy) in the project |
+| `<Leader>fF` | Find **all** files (including hidden/ignored) |
+| `<Leader>fw` | **Find word/text** across the project (live grep) |
+| `<Leader>fW` | Find text in **all** files |
+| `<Leader>fc` | Find the **word under the cursor** across the project |
+| `<Leader>fb` | Find among open **buffers** |
+| `<Leader>fo` | **Recent** files (old files) |
+| `<Leader>fp` | Find / switch **project** |
+| `<Leader>fh` | Search the **help** (`:help`) |
+| `<Leader>fk` | **Find keymaps** — the shortcut for finding any shortcut |
+| `<Leader>fC` | Find **commands** |
+| `<Leader>fT` | Find the project's **TODOs** |
+| `<Leader>ft` | Switch **theme** (colorscheme) |
+| `<Leader>fr` | Search **registers** |
+| `<Leader>fu` | **Undo** history |
+| `<Leader>f'` | Find **marks** |
+| `<Leader>fn` | Find past **notifications** |
+| `<Leader>f<CR>` | **Resume** the last search |
 
-## Archivos y explorador (Neo-tree, Oil)
+## Files and explorer (Neo-tree, Oil)
 
-Palabras clave: *explorador, árbol de archivos, file tree, sidebar, renombrar archivo, crear archivo, borrar archivo, mover archivo, navegar carpetas*.
+Keywords: *explorer, file tree, sidebar, rename file, create file, delete file, move file, browse folders*.
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `<Leader>e` | **Abrir/cerrar el explorador** (Neo-tree, sidebar) |
-| `<Leader>o` | Enfocar el explorador (o volver al editor) |
-| `<Leader>O` | **Abrir la carpeta actual en Oil** (editar el filesystem como buffer) |
-| `<Leader>n` | **Nuevo archivo** |
-| `<Leader>R` | **Renombrar** el archivo actual |
+| Key | What for / search |
+|-----|-------------------|
+| `<Leader>e` | **Open/close the explorer** (Neo-tree, sidebar) |
+| `<Leader>o` | Focus the explorer (or go back to the editor) |
+| `<Leader>O` | **Open the current folder in Oil** (edit the filesystem as a buffer) |
+| `<Leader>n` | **New file** |
+| `<Leader>R` | **Rename** the current file |
 
-**Oil** (plugin `oil.nvim`) — palabras clave: *editar filesystem, renombrar como texto, gestionar archivos con buffer*.
-Abrís con `<Leader>O`, y dentro editás la lista de archivos como si fuera texto normal:
-- Escribí un nombre nuevo y guardá (`:w`) para **crear** un archivo/carpeta.
-- Editá una línea para **renombrar**.
-- Borrá la línea para **eliminar**.
-- `-` sube al directorio padre; `<CR>` entra a la carpeta/archivo.
-- `gS` (si está grug-far) para buscar/reemplazar en ese directorio.
+**Oil** (`oil.nvim`) — keywords: *edit filesystem, rename as text, manage files in a buffer*.
+Open it with `<Leader>O` and edit the file listing as if it were plain text:
+- Type a new name and save (`:w`) to **create** a file/folder.
+- Edit a line to **rename**.
+- Delete the line to **remove**.
+- `-` goes up to the parent directory; `<CR>` enters the folder/file.
+- `gS` (with grug-far) to search/replace inside that directory.
 
 ## Git (status, commits, diff, blame)
 
-Palabras clave: *git, commit, branch, rama, stash, status, blame, hunk, stage, lazygit*.
+Keywords: *git, commit, branch, stash, status, blame, hunk, stage, lazygit*.
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `<Leader>gg` | **Abrir lazygit** (TUI completa de git: stage, commit, branch, rebase) |
+| Key | What for / search |
+|-----|-------------------|
+| `<Leader>gg` | **Open lazygit** (full git TUI: stage, commit, branch, rebase) |
 | `<Leader>gt` | Git **status** (Telescope) |
-| `<Leader>gb` | Git **branches** (ramas) |
-| `<Leader>gc` | Git **commits** del repositorio |
-| `<Leader>gC` | Git commits **del archivo actual** |
+| `<Leader>gb` | Git **branches** |
+| `<Leader>gc` | Git **commits** for the repository |
+| `<Leader>gC` | Git commits **for the current file** |
 | `<Leader>gT` | Git **stash** |
-| `<Leader>go` | **Abrir en el navegador** (git browse) — funciona también en visual sobre un rango |
+| `<Leader>go` | **Open in the browser** (git browse) — also works on a visual range |
 
-**Gitsigns** (marcadores en la columna, hunks) — usá los saltos entre cambios:
+**Gitsigns** (column markers, hunks) — use the jumps between changes:
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `]r` / `[r` | Ir a la **siguiente/anterior referencia** (word highlight) |
+| Key | What for / search |
+|-----|-------------------|
+| `]r` / `[r` | Go to the **next/previous reference** (word highlight) |
 
-> Para staging/reset de hunks y blame inline, gitsigns expone comandos y `<Leader>g` en which-key; explorá el menú con <kbd>Espacio</kbd>`g`.
+> For hunk staging/reset and inline blame, gitsigns exposes commands and `<Leader>g` in which-key; explore the menu with <kbd>Space</kbd>`g`.
 
-## Diff y merge conflicts (Diffview)
+## Diff and merge conflicts (Diffview)
 
-Plugin: **diffview.nvim**. **No usa keymaps de leader**, se maneja por comandos (`:`).
-Palabras clave: *diff, comparar cambios, revisar cambios, historial de archivo, merge conflict, resolver conflicto, review*.
+Plugin: **diffview.nvim**. It uses **no leader keymaps**, it's driven by commands (`:`).
+Keywords: *diff, compare changes, review changes, file history, merge conflict, resolve conflict, review*.
 
-| Comando | Para qué / buscar |
+| Command | What for / search |
 |---------|-------------------|
-| `:DiffviewOpen` | **Abrir el diff** de todos los archivos modificados (working tree) |
-| `:DiffviewOpen main..HEAD` | Comparar contra otra rama/rev |
-| `:DiffviewOpen HEAD~2` | Comparar contra un commit anterior |
-| `:DiffviewFileHistory %` | **Historial del archivo actual** (quién cambió qué) |
-| `:DiffviewFileHistory` | Historial de todo el repositorio |
-| `:DiffviewClose` | Cerrar la vista de diff |
-| `:DiffviewToggleFiles` | Mostrar/ocultar el panel lateral de archivos |
+| `:DiffviewOpen` | **Open the diff** of every modified file (working tree) |
+| `:DiffviewOpen main..HEAD` | Compare against another branch/rev |
+| `:DiffviewOpen HEAD~2` | Compare against an earlier commit |
+| `:DiffviewFileHistory %` | **History of the current file** (who changed what) |
+| `:DiffviewFileHistory` | History of the whole repository |
+| `:DiffviewClose` | Close the diff view |
+| `:DiffviewToggleFiles` | Show/hide the side file panel |
 
-> Para **resolver conflictos de merge**: abrí `:DiffviewOpen` durante un merge/rebase con
-> conflictos y vas a ver las versiones lado a lado para elegir.
+> To **resolve merge conflicts**: run `:DiffviewOpen` during a merge/rebase with
+> conflicts and you get the versions side by side to choose from.
 
-## Buffers y pestañas
+## Buffers and tabs
 
-Palabras clave: *buffer, cerrar buffer, cambiar de archivo abierto, tab, pestaña, siguiente buffer*.
+Keywords: *buffer, close buffer, switch open file, tab, next buffer*.
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `]b` / `[b` | Buffer **siguiente / anterior** |
-| `>b` / `<b` | **Mover** la pestaña del buffer a la derecha / izquierda |
-| `<Leader>c` | **Cerrar** el buffer actual |
-| `<Leader>C` | Cerrar el buffer **a la fuerza** (descarta cambios) |
-| `<Leader>bb` | **Seleccionar** un buffer desde la tabline |
-| `<Leader>bd` | Cerrar un buffer eligiéndolo desde la tabline |
-| `<Leader>bc` | Cerrar **todos menos el actual** |
-| `<Leader>bC` | Cerrar **todos** los buffers |
-| `<Leader>bl` / `<Leader>br` | Cerrar todos los buffers **a la izquierda / derecha** |
-| `<Leader>b\` / `<Leader>b|` | Abrir el buffer en split **horizontal / vertical** |
-| `]t` / `[t` | Pestaña (tab) **siguiente / anterior** |
+| Key | What for / search |
+|-----|-------------------|
+| `]b` / `[b` | **Next / previous** buffer |
+| `>b` / `<b` | **Move** the buffer tab right / left |
+| `<Leader>c` | **Close** the current buffer |
+| `<Leader>C` | **Force close** the buffer (discards changes) |
+| `<Leader>bb` | **Pick** a buffer from the tabline |
+| `<Leader>bd` | Close a buffer by picking it from the tabline |
+| `<Leader>bc` | Close **all but the current one** |
+| `<Leader>bC` | Close **all** buffers |
+| `<Leader>bl` / `<Leader>br` | Close every buffer **to the left / right** |
+| `<Leader>b\` / `<Leader>b|` | Open the buffer in a **horizontal / vertical** split |
+| `]t` / `[t` | **Next / previous** tab |
 
-## Ventanas / splits
+## Windows / splits
 
-Palabras clave: *split, dividir ventana, panel, moverse entre ventanas, redimensionar, resize*.
+Keywords: *split, divide window, pane, move between windows, resize*.
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `\` | **Split horizontal** |
-| `|` | **Split vertical** |
-| `<C-h>` / `<C-j>` / `<C-k>` / `<C-l>` | **Moverse** al split de la izquierda / abajo / arriba / derecha |
-| `<C-Left>` / `<C-Right>` | **Redimensionar** el split (ancho) |
-| `<C-Up>` / `<C-Down>` | Multicursor: agregar cursor **arriba / abajo** (ver Editar texto) |
-| `<Leader>q` | Cerrar la ventana |
+| Key | What for / search |
+|-----|-------------------|
+| `\` | **Horizontal split** |
+| `|` | **Vertical split** |
+| `<C-h>` / `<C-j>` / `<C-k>` / `<C-l>` | **Move** to the split left / down / up / right |
+| `<C-Left>` / `<C-Right>` | **Resize** the split (width) |
+| `<C-Up>` / `<C-Down>` | Multicursor: add a cursor **above / below** (see Editing text) |
+| `<Leader>q` | Close the window |
 
-> Nota: `<C-h/j/k/l>` sirven tanto para moverse entre splits como dentro de la terminal.
+> Note: `<C-h/j/k/l>` work both for moving between splits and inside the terminal.
 
-## Editar texto
+## Editing text
 
-Palabras clave: *comentar, comentario, rodear, comillas, paréntesis, surround, mover línea, multicursor, indentar, línea vacía*.
+Keywords: *comment, surround, quotes, parentheses, move line, multicursor, indent, blank line*.
 
-**Comentarios** (`gc`):
+**Comments** (`gc`):
 
-| Tecla | Modo | Para qué / buscar |
-|-------|------|-------------------|
-| `gcc` | n | **Comentar/descomentar la línea** |
-| `gc` | v/x | **Comentar/descomentar la selección** |
-| `gc` + movimiento | n | Comentar un textobject (ej. `gcap` un párrafo) |
-| `gco` / `gcO` | n | Agregar comentario **debajo / arriba** |
-| `<Leader>/` | n, v | Comentar línea / selección (alias) |
+| Key | Mode | What for / search |
+|-----|------|-------------------|
+| `gcc` | n | **Comment/uncomment the line** |
+| `gc` | v/x | **Comment/uncomment the selection** |
+| `gc` + motion | n | Comment a textobject (e.g. `gcap` for a paragraph) |
+| `gco` / `gcO` | n | Add a comment **below / above** |
+| `<Leader>/` | n, v | Comment line / selection (alias) |
 
-**Rodear con pares** (mini.surround, `gz`) — *comillas, brackets, tags*:
+**Surround with pairs** (mini.surround, `gz`) — *quotes, brackets, tags*:
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `gza` | **Agregar** un par alrededor (ej. `gzaiw"` rodea la palabra con comillas) |
-| `gzd` | **Borrar** el par que rodea |
-| `gzr` | **Reemplazar** el par que rodea (ej. `"` por `'`) |
-| `gzf` / `gzF` | Buscar el par a la derecha / izquierda |
-| `gzh` | Resaltar el par que rodea |
+| Key | What for / search |
+|-----|-------------------|
+| `gza` | **Add** a surrounding pair (e.g. `gzaiw"` wraps the word in quotes) |
+| `gzd` | **Delete** the surrounding pair |
+| `gzr` | **Replace** the surrounding pair (e.g. `"` with `'`) |
+| `gzf` / `gzF` | Find the pair to the right / left |
+| `gzh` | Highlight the surrounding pair |
 
-**Mover texto** (mini.move):
+**Move text** (mini.move):
 
-| Tecla | Modo | Para qué / buscar |
-|-------|------|-------------------|
-| `<M-h>` `<M-j>` `<M-k>` `<M-l>` | n | Mover la **línea** izquierda/abajo/arriba/derecha |
-| `<M-h>` `<M-j>` `<M-k>` `<M-l>` | v/x | Mover la **selección** |
+| Key | Mode | What for / search |
+|-----|------|-------------------|
+| `<M-h>` `<M-j>` `<M-k>` `<M-l>` | n | Move the **line** left/down/up/right |
+| `<M-h>` `<M-j>` `<M-k>` `<M-l>` | v/x | Move the **selection** |
 
-**Múltiples cursores** (vim-visual-multi):
+**Multiple cursors** (vim-visual-multi):
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `<C-Up>` / `<C-Down>` | Agregar un **cursor arriba / abajo** |
+| Key | What for / search |
+|-----|-------------------|
+| `<C-Up>` / `<C-Down>` | Add a **cursor above / below** |
 
-**Líneas e indentación:**
+**Lines and indentation:**
 
-| Tecla | Modo | Para qué / buscar |
-|-------|------|-------------------|
-| `[ ` (espacio) | n | Insertar **línea vacía arriba** |
-| `] ` (espacio) | n | Insertar **línea vacía abajo** |
-| `<Tab>` / `<S-Tab>` | v/x | **Indentar / des-indentar** la selección |
+| Key | Mode | What for / search |
+|-----|------|-------------------|
+| `[ ` (space) | n | Insert a **blank line above** |
+| `] ` (space) | n | Insert a **blank line below** |
+| `<Tab>` / `<S-Tab>` | v/x | **Indent / unindent** the selection |
 
-## LSP: código, diagnósticos, símbolos
+## LSP: code, diagnostics, symbols
 
-Palabras clave: *ir a definición, referencias, renombrar símbolo, code action, error, warning, diagnóstico, hover, autocompletar, formatear, implementación*.
+Keywords: *go to definition, references, rename symbol, code action, error, warning, diagnostic, hover, autocomplete, format, implementation*.
 
-| Tecla | Modo | Para qué / buscar |
-|-------|------|-------------------|
-| `grn` | n | **Renombrar** el símbolo bajo el cursor (en todo el proyecto) |
-| `gra` | n, v/x | **Code action** (arreglos rápidos, refactors) |
-| `grr` | n | Buscar **referencias** del símbolo |
-| `gri` | n | Ir a la **implementación** |
-| `grt` | n | Ir a la **definición de tipo** |
-| `gD` | n | Ir a la **declaración** |
-| `gO` | n | **Símbolos del documento** |
-| `gl` / `<Leader>ld` | n | **Hover de diagnósticos** (ver el error/warning en el punto) |
-| `<Leader>ls` | n | Buscar **símbolos** (Telescope) |
-| `<Leader>lS` | n | **Outline** de símbolos (aerial) |
-| `<Leader>lD` | n | Buscar **diagnósticos** del proyecto |
-| `]d` / `[d` | n | Ir al **siguiente / anterior diagnóstico** |
-| `]e` / `[e` | n | Ir al siguiente / anterior **error** |
-| `]w` / `[w` | n | Ir al siguiente / anterior **warning** |
-| `[D` / `]D` | n | Ir al **primer / último** diagnóstico del buffer |
-| `<C-w>d` | n | Mostrar el diagnóstico bajo el cursor en una ventana |
+| Key | Mode | What for / search |
+|-----|------|-------------------|
+| `grn` | n | **Rename** the symbol under the cursor (project-wide) |
+| `gra` | n, v/x | **Code action** (quick fixes, refactors) |
+| `grr` | n | Find **references** to the symbol |
+| `gri` | n | Go to the **implementation** |
+| `grt` | n | Go to the **type definition** |
+| `gD` | n | Go to the **declaration** |
+| `gO` | n | **Document symbols** |
+| `gl` / `<Leader>ld` | n | **Diagnostic hover** (see the error/warning at point) |
+| `<Leader>ls` | n | Find **symbols** (Telescope) |
+| `<Leader>lS` | n | Symbol **outline** (aerial) |
+| `<Leader>lD` | n | Find the project's **diagnostics** |
+| `]d` / `[d` | n | Go to the **next / previous diagnostic** |
+| `]e` / `[e` | n | Go to the next / previous **error** |
+| `]w` / `[w` | n | Go to the next / previous **warning** |
+| `[D` / `]D` | n | Go to the **first / last** diagnostic in the buffer |
+| `<C-w>d` | n | Show the diagnostic under the cursor in a window |
 
-> El **formateo al guardar** está activado globalmente (AstroLSP). La autocompletación
-> usa **blink.cmp**.
+> **Format on save** is enabled globally (AstroLSP). Completion uses **blink.cmp**.
 
 ## Debug (DAP)
 
-Palabras clave: *debug, depurar, breakpoint, punto de interrupción, step, paso a paso, REPL, watch, inspeccionar*.
+Keywords: *debug, breakpoint, step, step by step, REPL, watch, inspect*.
 
-| Tecla | Para qué / buscar | Alt. tecla F |
-|-------|-------------------|--------------|
+| Key | What for / search | Alt. F key |
+|-----|-------------------|------------|
 | `<Leader>db` | **Toggle breakpoint** | `<F9>` |
-| `<Leader>dC` | Breakpoint **condicional** | `<S-F9>` |
-| `<Leader>dB` | **Limpiar** todos los breakpoints | |
-| `<Leader>dc` | **Iniciar / continuar** | `<F5>` |
-| `<Leader>di` | **Step into** (entrar) | `<F11>` |
-| `<Leader>do` | **Step over** (siguiente) | `<F10>` |
-| `<Leader>dO` | **Step out** (salir) | `<S-F11>` |
-| `<Leader>dp` | **Pausar** | `<F6>` |
-| `<Leader>dr` | **Reiniciar** sesión | `<C-F5>` |
-| `<Leader>dQ` | **Terminar** sesión | `<S-F5>` |
-| `<Leader>dq` | Cerrar sesión | |
-| `<Leader>ds` | Ejecutar **hasta el cursor** | |
-| `<Leader>dh` | **Hover** del debugger (ver valor) | |
-| `<Leader>dE` | **Evaluar** una expresión (input) | |
+| `<Leader>dC` | **Conditional** breakpoint | `<S-F9>` |
+| `<Leader>dB` | **Clear** all breakpoints | |
+| `<Leader>dc` | **Start / continue** | `<F5>` |
+| `<Leader>di` | **Step into** | `<F11>` |
+| `<Leader>do` | **Step over** | `<F10>` |
+| `<Leader>dO` | **Step out** | `<S-F11>` |
+| `<Leader>dp` | **Pause** | `<F6>` |
+| `<Leader>dr` | **Restart** session | `<C-F5>` |
+| `<Leader>dQ` | **Terminate** session | `<S-F5>` |
+| `<Leader>dq` | Close session | |
+| `<Leader>ds` | Run **to cursor** | |
+| `<Leader>dh` | Debugger **hover** (inspect a value) | |
+| `<Leader>dE` | **Evaluate** an expression (input) | |
 | `<Leader>dR` | Toggle **REPL** | |
-| `<Leader>du` | Toggle **UI del debugger** | |
+| `<Leader>du` | Toggle **debugger UI** | |
 
 ## Terminal
 
-Palabras clave: *terminal, consola, shell, flotante, lazygit, python, node*.
+Keywords: *terminal, console, shell, floating, lazygit, python, node*.
 
-| Tecla | Modo | Para qué / buscar |
-|-------|------|-------------------|
-| `<C-'>` / `<F7>` | n, i, t | **Toggle terminal** rápido |
-| `<Leader>tf` | n | Terminal **flotante** (NvZone Floaterm) |
-| `<Leader>tF` | n | Terminal flotante (ToggleTerm) |
-| `<Leader>th` | n | Terminal en split **horizontal** |
-| `<Leader>tv` | n | Terminal en split **vertical** |
-| `<Leader>tl` / `<Leader>gg` | n | **lazygit** en terminal |
-| `<Leader>tn` | n | Terminal **node** |
-| `<Leader>tp` | n | Terminal **python** |
-| `<C-h/j/k/l>` | t | Moverse a otra ventana desde la terminal |
+| Key | Mode | What for / search |
+|-----|------|-------------------|
+| `<C-'>` / `<F7>` | n, i, t | Quick **terminal toggle** |
+| `<Leader>tf` | n | **Floating** terminal (NvZone Floaterm) |
+| `<Leader>tF` | n | Floating terminal (ToggleTerm) |
+| `<Leader>th` | n | Terminal in a **horizontal** split |
+| `<Leader>tv` | n | Terminal in a **vertical** split |
+| `<Leader>tl` / `<Leader>gg` | n | **lazygit** in a terminal |
+| `<Leader>tn` | n | **node** terminal |
+| `<Leader>tp` | n | **python** terminal |
+| `<C-h/j/k/l>` | t | Move to another window from the terminal |
 
-## IA (Kiro / Claude Code)
+## AI (Kiro / Claude Code)
 
-Palabras clave: *IA, AI, asistente, chat, kiro, claude, copilot, agregar contexto, diagnósticos al chat*.
+Keywords: *AI, assistant, chat, kiro, claude, copilot, add context, diagnostics to chat*.
 
 **Kiro CLI** (`<Leader>ak`):
 
-| Tecla | Modo | Para qué / buscar |
-|-------|------|-------------------|
-| `<Leader>akk` | n, v | **Toggle** la sesión de Kiro (abrir/ocultar) |
-| `<Leader>akn` | n | **Nueva** sesión de Kiro |
-| `<Leader>akr` | n | **Reanudar** la sesión más reciente |
-| `<Leader>akl` | n | **Listar/elegir** sesión (picker de kiro-cli) |
-| `<Leader>akR` | n | **Restaurar** sesión de este directorio |
-| `<Leader>akx` | n | **Cerrar/destruir** la sesión |
-| `<Leader>aka` | n | **Agregar el archivo actual** al chat |
-| `<Leader>aka` | v | **Agregar la selección** al chat |
-| `<Leader>akd` | n | Agregar **diagnósticos de la línea** al chat |
-| `<Leader>akD` | n | Agregar **diagnósticos del buffer** al chat |
+| Key | Mode | What for / search |
+|-----|------|-------------------|
+| `<Leader>akk` | n, v | **Toggle** the Kiro session (show/hide) |
+| `<Leader>akn` | n | **New** Kiro session |
+| `<Leader>akr` | n | **Resume** the most recent session |
+| `<Leader>akl` | n | **List/pick** a session (kiro-cli picker) |
+| `<Leader>akR` | n | **Restore** this directory's session |
+| `<Leader>akx` | n | **Close/destroy** the session |
+| `<Leader>aka` | n | **Add the current file** to the chat |
+| `<Leader>aka` | v | **Add the selection** to the chat |
+| `<Leader>akd` | n | Add the **line's diagnostics** to the chat |
+| `<Leader>akD` | n | Add the **buffer's diagnostics** to the chat |
 
 **Claude Code** (`<Leader>a`):
 
-| Tecla | Modo | Para qué / buscar |
-|-------|------|-------------------|
+| Key | Mode | What for / search |
+|-----|------|-------------------|
 | `<Leader>ac` | n | **Toggle** Claude |
-| `<Leader>af` | n | **Enfocar** Claude |
-| `<Leader>ar` | n | **Reanudar** Claude |
-| `<Leader>aC` | n | **Continuar** Claude |
-| `<Leader>am` | n | **Elegir modelo** de Claude |
-| `<Leader>ab` | n | Agregar el **buffer actual** |
-| `<Leader>as` | v | **Enviar la selección** a Claude |
-| `<Leader>aa` | n | **Aceptar** el diff propuesto |
-| `<Leader>ad` | n | **Rechazar** el diff |
+| `<Leader>af` | n | **Focus** Claude |
+| `<Leader>ar` | n | **Resume** Claude |
+| `<Leader>aC` | n | **Continue** Claude |
+| `<Leader>am` | n | **Pick a model** |
+| `<Leader>ab` | n | Add the **current buffer** |
+| `<Leader>as` | v | **Send the selection** |
+| `<Leader>aa` | n | **Accept** the proposed diff |
+| `<Leader>ad` | n | **Reject** the diff |
 
-## Toggles y UI
+## Toggles and UI
 
-Palabras clave: *activar, desactivar, toggle, número de línea, wrap, spell, zen, tema oscuro, indent, conceal, diagnósticos on/off*.
+Keywords: *enable, disable, toggle, line numbers, wrap, spell, zen, dark theme, indent, conceal, diagnostics on/off*.
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `<Leader>uZ` | **Zen mode** (foco, sin distracciones) |
-| `<Leader>uw` | Toggle **wrap** (ajuste de línea) |
-| `<Leader>un` | Cambiar **numeración** de línea |
-| `<Leader>us` | Toggle **spellcheck** (corrector) |
-| `<Leader>ud` | Toggle **diagnósticos** |
-| `<Leader>uv` | Toggle **virtual text** de diagnósticos |
-| `<Leader>uV` | Toggle **virtual lines** de diagnósticos |
-| `<Leader>ub` | Toggle fondo **claro/oscuro** |
-| `<Leader>uC` / `<Leader>uc` | Toggle **autocompletado** (global / buffer) |
+| Key | What for / search |
+|-----|-------------------|
+| `<Leader>uZ` | **Zen mode** (focus, no distractions) |
+| `<Leader>uw` | Toggle **wrap** |
+| `<Leader>un` | Change line **numbering** |
+| `<Leader>us` | Toggle **spellcheck** |
+| `<Leader>ud` | Toggle **diagnostics** |
+| `<Leader>uv` | Toggle diagnostic **virtual text** |
+| `<Leader>uV` | Toggle diagnostic **virtual lines** |
+| `<Leader>ub` | Toggle **light/dark** background |
+| `<Leader>uC` / `<Leader>uc` | Toggle **completion** (global / buffer) |
 | `<Leader>ua` | Toggle **autopairs** |
-| `<Leader>ui` | Cambiar el **indent** |
-| `<Leader>u\|` | Toggle **guías de indentación** |
+| `<Leader>ui` | Change the **indent** |
+| `<Leader>u\|` | Toggle **indent guides** |
 | `<Leader>uS` | Toggle **conceal** |
-| `<Leader>uz` | Toggle **resaltado de colores** |
-| `<Leader>uD` | **Descartar** notificaciones |
+| `<Leader>uz` | Toggle **color highlighting** |
+| `<Leader>uD` | **Dismiss** notifications |
 | `<Leader>ul` | Toggle **statusline** |
 | `<Leader>ut` | Toggle **tabline** |
 | `<Leader>ug` | Toggle **signcolumn** |
 | `<Leader>uy` | Toggle **syntax highlight** (buffer) |
-| `<Leader>uu` | Toggle **resaltado de URLs** |
+| `<Leader>uu` | Toggle **URL highlighting** |
 
-## Sesiones
+## Sessions
 
-Palabras clave: *sesión, guardar sesión, restaurar workspace, dirsession, retomar proyecto*.
+Keywords: *session, save session, restore workspace, dirsession, resume project*.
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `<Leader>Ss` | **Guardar** esta sesión |
-| `<Leader>Sl` | Cargar la **última** sesión |
-| `<Leader>Sf` | **Cargar** una sesión |
-| `<Leader>Sd` | **Borrar** una sesión |
-| `<Leader>St` | Guardar la sesión **de esta pestaña** |
-| `<Leader>SS` | Guardar la **dirsession** (por directorio) |
-| `<Leader>S.` | Cargar la dirsession del directorio actual |
-| `<Leader>SF` | Cargar una dirsession |
-| `<Leader>SD` | Borrar una dirsession |
+| Key | What for / search |
+|-----|-------------------|
+| `<Leader>Ss` | **Save** this session |
+| `<Leader>Sl` | Load the **last** session |
+| `<Leader>Sf` | **Load** a session |
+| `<Leader>Sd` | **Delete** a session |
+| `<Leader>St` | Save **this tab's** session |
+| `<Leader>SS` | Save the **dirsession** (per directory) |
+| `<Leader>S.` | Load the current directory's dirsession |
+| `<Leader>SF` | Load a dirsession |
+| `<Leader>SD` | Delete a dirsession |
 
-## Plugins y paquetes
+## Plugins and packages
 
-Palabras clave: *lazy, mason, instalar plugin, actualizar, update, sync, LSP install*.
+Keywords: *lazy, mason, install plugin, update, sync, LSP install*.
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `<Leader>pi` | **Instalar** plugins (Lazy) |
-| `<Leader>ps` | **Estado** de plugins (Lazy) |
-| `<Leader>pS` | **Sync** de plugins |
-| `<Leader>pu` | Chequear **actualizaciones** |
-| `<Leader>pU` | **Actualizar** plugins |
-| `<Leader>pa` | Actualizar **Lazy y Mason** juntos |
-| `<Leader>pm` | Abrir **Mason** (instalador de LSP/formatters/DAP) |
-| `<Leader>pM` | **Actualizar** paquetes de Mason |
+| Key | What for / search |
+|-----|-------------------|
+| `<Leader>pi` | **Install** plugins (Lazy) |
+| `<Leader>ps` | Plugin **status** (Lazy) |
+| `<Leader>pS` | Plugin **sync** |
+| `<Leader>pu` | Check for **updates** |
+| `<Leader>pU` | **Update** plugins |
+| `<Leader>pa` | Update **Lazy and Mason** together |
+| `<Leader>pm` | Open **Mason** (LSP/formatter/DAP installer) |
+| `<Leader>pM` | **Update** Mason packages |
 
-## Archivo / general
+## File / general
 
-Palabras clave: *guardar, salir, quit, nuevo archivo, home, dashboard, quickfix*.
+Keywords: *save, quit, new file, home, dashboard, quickfix*.
 
-| Tecla | Para qué / buscar |
-|-------|-------------------|
-| `<Leader>w` | **Guardar** el archivo |
-| `<C-s>` | **Guardar** a la fuerza |
-| `<Leader>n` | **Nuevo** archivo |
-| `<Leader>h` | Pantalla de inicio (**dashboard**) |
-| `<Leader>q` | Cerrar ventana |
-| `<Leader>Q` | **Salir** de Neovim |
-| `<C-q>` | Salir a la fuerza |
-| `<Leader>xq` | Lista **quickfix** |
-| `<Leader>xl` | Lista de **ubicaciones** (location list) |
-| `]q` / `[q` | Siguiente / anterior en el quickfix |
+| Key | What for / search |
+|-----|-------------------|
+| `<Leader>w` | **Save** the file |
+| `<C-s>` | **Force save** |
+| `<Leader>n` | **New** file |
+| `<Leader>h` | Home screen (**dashboard**) |
+| `<Leader>q` | Close the window |
+| `<Leader>Q` | **Quit** Neovim |
+| `<C-q>` | Force quit |
+| `<Leader>xq` | **Quickfix** list |
+| `<Leader>xl` | **Location** list |
+| `]q` / `[q` | Next / previous quickfix entry |
 
 ---
 
-## Plugins destacados de esta config
+## Notable plugins in this config
 
-| Plugin | Qué aporta |
-|--------|------------|
-| **flash.nvim** | Saltos en pantalla con etiquetas (`s`, `S`) |
-| **grug-far.nvim** | Buscar/reemplazar en el proyecto con preview (`<Leader>s…`) |
-| **diffview.nvim** | Vista de diffs, historial y merge conflicts (`:DiffviewOpen`) |
-| **oil.nvim** | Editar el filesystem como buffer (`<Leader>O`) |
-| **snacks.nvim** | Dashboard, terminal, picker, notificaciones, lazygit |
-| **neo-tree** | Explorador de archivos en sidebar (`<Leader>e`) |
-| **gitsigns** | Marcadores de git en la columna, hunks, blame |
-| **which-key** | Menú de descubrimiento de keymaps (apretá `<Leader>`) |
-| **mini.surround / mini.move** | Rodear con pares (`gz`), mover líneas (`<M-…>`) |
-| **vim-visual-multi** | Múltiples cursores (`<C-Up>`/`<C-Down>`) |
+| Plugin | What it adds |
+|--------|--------------|
+| **flash.nvim** | Labelled on-screen jumps (`s`, `S`) |
+| **grug-far.nvim** | Project-wide search/replace with preview (`<Leader>s…`) |
+| **diffview.nvim** | Diff view, file history and merge conflicts (`:DiffviewOpen`) |
+| **oil.nvim** | Edit the filesystem as a buffer (`<Leader>O`) |
+| **snacks.nvim** | Dashboard, terminal, picker, notifications, lazygit |
+| **neo-tree** | File explorer in a sidebar (`<Leader>e`) |
+| **gitsigns** | Git markers in the column, hunks, blame |
+| **which-key** | Keymap discovery menu (press `<Leader>`) |
+| **mini.surround / mini.move** | Surround with pairs (`gz`), move lines (`<M-…>`) |
+| **vim-visual-multi** | Multiple cursors (`<C-Up>`/`<C-Down>`) |
 
-Packs de lenguaje activos (LSP + formato + debug): Lua, YAML, Go, Bash, Docker,
+Active language packs (LSP + formatting + debug): Lua, YAML, Go, Bash, Docker,
 Terraform, Python, JSON, HTML/CSS, Helm.
 
-## Instalación
+## Install
 
-Esta config es parte del repo de dotfiles: el instalador de la raíz enlaza
-`~/.config/nvim` acá y ya instala las herramientas externas.
+This config is part of the dotfiles repo: the root installer links
+`~/.config/nvim` here and installs the external tools for you.
 
 ```shell
 git clone git@github.com:cesarbqz/dotfiles.git ~/.config/dotfiles
@@ -441,44 +440,44 @@ cd ~/.config/dotfiles
 ./install.sh
 ```
 
-Para enlazar solo Neovim, sin tocar tmux ni el gestor de paquetes:
+To link only Neovim, without touching tmux or the package manager:
 
 ```shell
 ./nvim/install.sh
 ```
 
-Si ya tenías un `~/.config/nvim`, el instalador lo mueve a
-`~/.config/nvim.bak-<timestamp>` en vez de borrarlo. El estado de los plugins
-(`~/.local/share/nvim`, `~/.local/state/nvim`, `~/.cache/nvim`) queda intacto; si
-venís de otra config y algo se comporta raro, moveé esos tres directorios a
-`.bak` y arrancá `nvim` de nuevo.
+If you already had a `~/.config/nvim`, the installer moves it to
+`~/.config/nvim.bak-<timestamp>` instead of deleting it. Plugin state
+(`~/.local/share/nvim`, `~/.local/state/nvim`, `~/.cache/nvim`) is left
+untouched; if you are coming from another config and something behaves oddly,
+move those three directories to `.bak` and start `nvim` again.
 
-La primera vez que abras `nvim`, lazy.nvim instala los plugins en las versiones
-fijadas en `lazy-lock.json`. Cuando agregues o actualices plugins, commiteá ese
-archivo para que las demás máquinas queden idénticas.
+The first time you open `nvim`, lazy.nvim installs the plugins at the versions
+pinned in `lazy-lock.json`. When you add or update plugins, commit that file so
+every other machine ends up identical.
 
-## Requisitos
+## Requirements
 
-La lista completa está en el [README de la raíz](../README.md#requisitos). En
-resumen, para esta config de Neovim:
+The full list is in the [root README](../README.md#requirements). In short, for
+this Neovim config:
 
-`install.sh` instala con `brew` o `apt-get`:
+`install.sh` installs with `brew` or `apt-get`:
 
-- **Neovim ≥ 0.10** — AstroNvim v5 no arranca con una versión anterior.
-- **ripgrep** (`rg`) — necesario para grug-far y el live grep de Telescope.
-- **fd** — acelera la búsqueda de archivos.
-- **lazygit** — TUI de git (`<Leader>gg`).
-- Una **Nerd Font** activa en la terminal — si no, los iconos se ven como cuadraditos.
+- **Neovim ≥ 0.10** — AstroNvim v5 won't start on anything older.
+- **ripgrep** (`rg`) — needed by grug-far and Telescope's live grep.
+- **fd** — speeds up file searching.
+- **lazygit** — git TUI (`<Leader>gg`).
+- A **Nerd Font** enabled in the terminal — otherwise the icons render as boxes.
 
-Y estos los tenés que tener vos, porque los maneja tu gestor de versiones
-(nvm, pyenv, goenv). `install.sh` solo comprueba si están:
+And these you provide yourself, because your version manager owns them (nvm,
+pyenv, goenv). `install.sh` only checks whether they are present:
 
-- **node** — los LSP que Mason instala por npm: bash, json, yaml, html/css, docker, emmet, `prettierd`.
-- **go** — `gopls`, `delve`, `goimports` y el resto del pack de Go.
+- **node** — the LSPs Mason installs through npm: bash, json, yaml, html/css, docker, emmet, `prettierd`.
+- **go** — `gopls`, `delve`, `goimports` and the rest of the Go pack.
 - **python3** — `debugpy`, `black`, `isort`.
-- **deno** — `peek.nvim`, el preview de markdown.
-- **Un compilador de C** — para los parsers de treesitter.
+- **deno** — `peek.nvim`, the markdown preview.
+- **A C compiler** — for the treesitter parsers.
 
-Falta uno, no funciona esa parte y el resto anda igual. Los packs de lenguaje
-activos están en [`lua/community.lua`](lua/community.lua): si sacás uno, dejás de
-necesitar su runtime.
+Miss one and that part stops working while everything else is fine. The active
+language packs live in [`lua/community.lua`](lua/community.lua): drop one and you
+no longer need its runtime.

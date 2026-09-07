@@ -1,9 +1,9 @@
 #!/bin/sh
-# bootstrap de estos dotfiles: instala las dependencias externas y enlaza
-# cada configuración. es seguro re-ejecutarlo.
+# bootstrap for these dotfiles: installs the external dependencies and links
+# every config. safe to re-run.
 #
-#   ./install.sh              instala dependencias + enlaza todo
-#   ./install.sh --no-deps    solo enlaza (no toca el gestor de paquetes)
+#   ./install.sh              install dependencies + link everything
+#   ./install.sh --no-deps    link only (never touches the package manager)
 set -e
 
 dotfiles_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
@@ -13,11 +13,11 @@ for arg in "$@"; do
   case "$arg" in
     --no-deps) with_deps=0 ;;
     -h|--help) sed -n '2,6p' "$0" | cut -c3-; exit 0 ;;
-    *) echo "opción desconocida: $arg (probá --help)" >&2; exit 2 ;;
+    *) echo "unknown option: $arg (try --help)" >&2; exit 2 ;;
   esac
 done
 
-# comando · paquete en brew · paquete en apt ("-" = no disponible ahí)
+# command · brew package · apt package ("-" = not available there)
 deps='nvim neovim neovim
 tmux tmux tmux
 git git git
@@ -27,7 +27,7 @@ lazygit lazygit -'
 
 have() {
   case "$1" in
-    # en debian/ubuntu el binario de fd-find se llama fdfind
+    # on debian/ubuntu the fd-find binary is called fdfind
     fd) command -v fd >/dev/null 2>&1 || command -v fdfind >/dev/null 2>&1 ;;
     *) command -v "$1" >/dev/null 2>&1 ;;
   esac
@@ -38,17 +38,17 @@ nerd_font_installed() {
 }
 
 install_deps() {
-  faltan='' pkgs='' sin_paquete=''
+  missing='' pkgs='' unpackaged=''
   while read -r cmd brew_pkg apt_pkg; do
     [ -n "$cmd" ] || continue
     have "$cmd" && continue
-    faltan="$faltan $cmd"
+    missing="$missing $cmd"
     case "$manager" in
       brew) pkg=$brew_pkg ;;
       apt) pkg=$apt_pkg ;;
     esac
     if [ "$pkg" = "-" ]; then
-      sin_paquete="$sin_paquete $cmd"
+      unpackaged="$unpackaged $cmd"
     else
       pkgs="$pkgs $pkg"
     fi
@@ -57,23 +57,23 @@ $deps
 EOF
 
   if [ -n "$pkgs" ]; then
-    echo "instalando:$pkgs"
+    echo "installing:$pkgs"
     case "$manager" in
       brew) brew install $pkgs ;;
       apt) $sudo apt-get update && $sudo apt-get install -y $pkgs ;;
     esac
-  elif [ -z "$faltan" ]; then
-    echo "todas las dependencias ya están instaladas"
+  elif [ -z "$missing" ]; then
+    echo "all dependencies already installed"
   fi
 
-  [ -n "$sin_paquete" ] && echo "aviso: instalá a mano:$sin_paquete" >&2
+  [ -n "$unpackaged" ] && echo "warning: install by hand:$unpackaged" >&2
 
-  # la config usa iconos: sin una Nerd Font se ven como cuadraditos
+  # the config uses icons: without a Nerd Font they render as boxes
   if [ "$manager" = brew ] && ! nerd_font_installed; then
-    echo "instalando JetBrainsMono Nerd Font"
+    echo "installing JetBrainsMono Nerd Font"
     brew install --cask font-jetbrains-mono-nerd-font
   elif [ "$manager" != brew ] && ! nerd_font_installed; then
-    echo "aviso: instalá una Nerd Font (https://nerdfonts.com) y activala en tu terminal" >&2
+    echo "warning: install a Nerd Font (https://nerdfonts.com) and enable it in your terminal" >&2
   fi
 }
 
@@ -92,7 +92,7 @@ if [ "$with_deps" -eq 1 ]; then
   if [ -n "$manager" ]; then
     install_deps
   else
-    echo "aviso: sin brew ni apt-get; instalá a mano neovim tmux git ripgrep fd lazygit" >&2
+    echo "warning: no brew or apt-get; install neovim tmux git ripgrep fd lazygit by hand" >&2
   fi
   echo
 fi
@@ -103,39 +103,39 @@ for tool in nvim tmux; do
   echo
 done
 
-# runtime · para qué hace falta
-# no se instalan solos a propósito: suelen manejarse con nvm/pyenv/goenv, y
-# meterlos por brew/apt pisaría esa configuración.
-runtimes='node|LSP de bash, json, yaml, html/css y docker, y prettierd
-go|gopls, delve y el resto del pack de Go
-python3|debugpy, black e isort
-deno|peek.nvim (preview de markdown)
-cc|compilar los parsers de treesitter'
+# runtime · what needs it
+# deliberately not installed for you: these are usually managed by
+# nvm/pyenv/goenv, and installing them over brew/apt would shadow that setup.
+runtimes='node|the bash, json, yaml, html/css and docker LSPs, and prettierd
+go|gopls, delve and the rest of the Go pack
+python3|debugpy, black and isort
+deno|peek.nvim (markdown preview)
+cc|compiling the treesitter parsers'
 
-echo "== comprobación =="
+echo "== checks =="
 
-# AstroNvim v5 aborta con Neovim < 0.10; en algunas distros apt trae una anterior
+# AstroNvim v5 aborts on Neovim < 0.10; apt on some distros ships an older one
 if command -v nvim >/dev/null 2>&1 &&
    [ "$(nvim --clean --headless -c 'lua io.write(vim.fn.has("nvim-0.10"))' -c q 2>/dev/null)" != 1 ]; then
-  echo "ERROR: AstroNvim necesita Neovim >= 0.10, tenés $(nvim --version | head -1)" >&2
-  echo "       instalalo desde https://github.com/neovim/neovim/releases" >&2
+  echo "ERROR: AstroNvim needs Neovim >= 0.10, you have $(nvim --version | head -1)" >&2
+  echo "       get it from https://github.com/neovim/neovim/releases" >&2
 fi
 
-pendientes=0
-while IFS='|' read -r cmd para; do
+pending=0
+while IFS='|' read -r cmd needed_for; do
   [ -n "$cmd" ] || continue
   command -v "$cmd" >/dev/null 2>&1 && continue
-  echo "falta $cmd — sin él no van: $para"
-  pendientes=1
+  echo "missing $cmd — without it you lose: $needed_for"
+  pending=1
 done <<EOF
 $runtimes
 EOF
 
-if [ "$pendientes" -eq 1 ]; then
-  echo "(el resto funciona igual; instalá lo que uses)"
+if [ "$pending" -eq 1 ]; then
+  echo "(everything else still works; install what you use)"
 else
-  echo "todos los runtimes presentes"
+  echo "all runtimes present"
 fi
 echo
 
-echo "todo listo."
+echo "all done."

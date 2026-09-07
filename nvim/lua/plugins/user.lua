@@ -1,7 +1,7 @@
 ---@type LazySpec
 return {
 
-  -- separadores de ventana y fin-de-buffer
+  -- window separators and end-of-buffer
   {
     "AstroNvim/astrocore",
     opts = {
