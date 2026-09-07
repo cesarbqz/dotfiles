@@ -1,6 +1,27 @@
 ---@type LazySpec
 return {
 
+  -- separadores de ventana y fin-de-buffer
+  {
+    "AstroNvim/astrocore",
+    opts = {
+      options = {
+        opt = {
+          fillchars = {
+            vert = "│",
+            horiz = "─",
+            vertleft = "┤",
+            vertright = "├",
+            verthoriz = "┼",
+            horizup = "┴",
+            horizdown = "┬",
+            eob = " ",
+          },
+        },
+      },
+    },
+  },
+
   -- == Examples of Adding Plugins ==
 
   "andweeb/presence.nvim",

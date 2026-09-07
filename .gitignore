@@ -1,0 +1,6 @@
+# generado por tmux/install.sh: symlink a la copia local de oh-my-tmux.
+# no se versiona porque su destino depende de $HOME de cada máquina.
+tmux/tmux.conf
+
+# oh-my-tmux clona los plugins (tpm, resurrect, ...) en $(dirname $TMUX_CONF)/plugins
+tmux/plugins/

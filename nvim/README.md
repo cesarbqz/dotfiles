@@ -432,22 +432,36 @@ Terraform, Python, JSON, HTML/CSS, Helm.
 
 ## Instalación
 
+Esta config es parte del repo de dotfiles: el instalador de la raíz enlaza
+`~/.config/nvim` acá y ya instala las herramientas externas.
+
 ```shell
-# Backup de tu config actual
-mv ~/.config/nvim ~/.config/nvim.bak
-mv ~/.local/share/nvim ~/.local/share/nvim.bak
-mv ~/.local/state/nvim ~/.local/state/nvim.bak
-mv ~/.cache/nvim ~/.cache/nvim.bak
-
-# Clonar esta config
-git clone <tu_repo> ~/.config/nvim
-
-# Arrancar (lazy.nvim instala todo la primera vez)
-nvim
+git clone git@github.com:cesarbqz/dotfiles.git ~/.config/dotfiles
+cd ~/.config/dotfiles
+./install.sh
 ```
 
+Para enlazar solo Neovim, sin tocar tmux ni el gestor de paquetes:
+
+```shell
+./nvim/install.sh
+```
+
+Si ya tenías un `~/.config/nvim`, el instalador lo mueve a
+`~/.config/nvim.bak-<timestamp>` en vez de borrarlo. El estado de los plugins
+(`~/.local/share/nvim`, `~/.local/state/nvim`, `~/.cache/nvim`) queda intacto; si
+venís de otra config y algo se comporta raro, moveé esos tres directorios a
+`.bak` y arrancá `nvim` de nuevo.
+
+La primera vez que abras `nvim`, lazy.nvim instala los plugins en las versiones
+fijadas en `lazy-lock.json`. Cuando agregues o actualices plugins, commiteá ese
+archivo para que las demás máquinas queden idénticas.
+
 ## Herramientas externas recomendadas
+
+`install.sh` las instala automáticamente con `brew` o `apt-get`:
 
 - **ripgrep** (`rg`) — necesario para grug-far y el live grep de Telescope.
 - **fd** — acelera la búsqueda de archivos.
 - **lazygit** — TUI de git (`<Leader>gg`).
+- Una **Nerd Font** activa en la terminal — si no, los iconos se ven como cuadraditos.
