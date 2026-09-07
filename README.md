@@ -3,6 +3,29 @@
 Configuración de **Neovim** (AstroNvim v5) y **tmux** (oh-my-tmux), pensada para
 levantarse en cualquier máquina con un solo comando.
 
+## Cómo se ve
+
+Neovim (AstroNvim + catppuccin) con el explorador de archivos abierto, corriendo
+dentro de tmux:
+
+![Neovim con neo-tree, tabline y statusline, dentro de tmux](docs/nvim.png)
+
+tmux con la barra de estado de oh-my-tmux y tres paneles — historia de git, el
+instalador y el estado del repo:
+
+![tmux con tres paneles y la barra de estado de oh-my-tmux](docs/tmux.png)
+
+Las dos capturas se generan solas desde [`docs/demo.tape`](docs/demo.tape), así
+que se pueden rehacer cuando cambie la config:
+
+```shell
+brew install vhs
+vhs docs/demo.tape
+```
+
+Usa los symlinks que dejó `install.sh`, o sea que refleja lo que hay commiteado
+acá. Corre tmux sobre un socket propio (`-L vhs`) para no tocar tus sesiones.
+
 ## Requisitos
 
 ### Antes de empezar
