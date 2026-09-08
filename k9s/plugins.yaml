@@ -1,0 +1,93 @@
+plugins:
+  # --- ArgoCD ---------------------------------------------------------
+  argocd-sync:
+    shortCut: Shift-S
+    confirm: true
+    scopes:
+      - all
+    description: ArgoCD Sync
+    command: bash
+    background: false
+    args:
+      - -c
+      - "argocd app sync $NAME | less"
+
+  argocd-diff:
+    shortCut: Shift-D
+    confirm: false
+    scopes:
+      - all
+    description: ArgoCD Diff
+    command: bash
+    background: false
+    args:
+      - -c
+      - "argocd app diff $NAME | less"
+
+  # --- Secrets ----------------------------------------------------------
+  decode-secret:
+    shortCut: Shift-X
+    confirm: false
+    scopes:
+      - secrets
+    description: Decode Secret
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl get secret $NAME -n $NAMESPACE -o json | jq -r '.data | map_values(@base64d)' | less"
+
+  # --- Rollouts -----------------------------------------------------------
+  rollout-restart:
+    shortCut: Shift-R
+    confirm: true
+    scopes:
+      - deployments
+      - statefulsets
+      - daemonsets
+    description: Rollout Restart
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl rollout restart $RESOURCE_NAME/$NAME -n $NAMESPACE --context $CONTEXT | less"
+
+  # --- Logs -----------------------------------------------------------------
+  stern-logs:
+    shortCut: Shift-L
+    confirm: false
+    scopes:
+      - pods
+      - deployments
+    description: Stern (tail all containers)
+    command: sh
+    background: false
+    args:
+      - -c
+      - "stern $NAME -n $NAMESPACE --context $CONTEXT"
+
+  # --- Cluster health ---------------------------------------------------
+  popeye-scan:
+    shortCut: Shift-P
+    confirm: false
+    scopes:
+      - all
+    description: Popeye Scan
+    command: sh
+    background: false
+    args:
+      - -c
+      - "popeye --context $CONTEXT -n $NAMESPACE | less"
+
+  # --- Image security -----------------------------------------------------
+  trivy-image:
+    shortCut: Shift-I
+    confirm: false
+    scopes:
+      - pods
+    description: Trivy Image Scan
+    command: sh
+    background: false
+    args:
+      - -c
+      - "kubectl get pod $NAME -n $NAMESPACE -o jsonpath='{.spec.containers[0].image}' | xargs trivy image | less"
